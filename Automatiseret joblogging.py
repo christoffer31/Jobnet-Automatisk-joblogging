@@ -4,15 +4,14 @@ import time
 import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-#place chromedriver in code directory or change path to something else
+
 chromedriverpath = os.getcwd() + "/chromedriver.exe"
 browser = webdriver.Chrome(chromedriverpath)
 
-#set username
-username ='Me'
-#set password
-password ='1234'
-
+#username
+username ='user'
+#password
+password ='123'
 
 def site_login():
     browser.get('https://job.jobnet.dk/CV/frontpage')
@@ -32,18 +31,20 @@ site_login()
 def joblog():
     browser.get('https://job.jobnet.dk/cv/jobseeking/joblog')  
 
-
 def logjobs():
     browser.get('https://job.jobnet.dk/cv/jobseeking/joblog/detail') 
     
 logjobs()
+
+
 #Job specifications
-Stilling = 'Direktør'
-Virksomhedsnavn = 'Google'
+Stilling = 'Scrum Master'
+Virksomhedsnavn = 'Nykredit'
 Nordjylland = '1'
 Område = Nordjylland
-#add date value
-
+today = False
+date = '10-07-2020'
+Autosave = False
 
 def send_text():
     #Stilling text
@@ -68,11 +69,36 @@ def set_page():
     
 set_page()
 
-#add set date
+#set date
+def set_date():
+    browser.find_element_by_xpath("/html/body/div[6]/jn-root/jn-layout-main/section/main/article/jn-jobseeking-detail/jn-page/jn-form/form/jn-application/jn-details-container/div/fieldset/fieldset[1]/div[3]/div/jn-form-datepicker/div/jn-datepicker-reactive/div/input").clear()
+    browser.find_element_by_xpath("/html/body/div[6]/jn-root/jn-layout-main/section/main/article/jn-jobseeking-detail/jn-page/jn-form/form/jn-application/jn-details-container/div/fieldset/fieldset[1]/div[3]/div/jn-form-datepicker/div/jn-datepicker-reactive/div/input").send_keys(date)
 
+if not today == True:
+    set_date()
+    
 #Save log
 def gemlog():
      browser.find_element_by_xpath("/html/body/div[6]/jn-root/jn-layout-main/section/main/article/jn-jobseeking-detail/jn-page/jn-form/form/jn-details-control/nav/button").click()
 
+if Autosave == True:
+    gemlog()
 
+#kør igen
+
+Stilling = 'Ejndoms analytikker'
+Virksomhedsnavn = 'Nykredit'
+
+def again():
+    logjobs()
+    time.sleep(5)
+    send_text()
+    set_page()
+    if not today == True:
+        set_date()
+    if Autosave == True:
+        gemlog()
+        
+again()
+    
 
